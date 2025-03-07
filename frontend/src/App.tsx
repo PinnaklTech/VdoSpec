@@ -11,7 +11,8 @@ function App() {
   return (
     <Router>
       {/* Apply new background gradient with blobs */}
-      <div className="relative min-h-screen bg-gradient-to-b from-[#f3f8ff] via-[#deecff] to-[#c6cfff] dark:from-[#232323] dark:via-[#1A1A1A] dark:to-[#101010] overflow-hidden">
+      <div className="relative min-h-screen bg-white dark:bg-[#101010] overflow-hidden">
+
         
         {/* Random Blobs */}
         <div className="absolute top-10 left-10 w-72 h-72 bg-blue-300 rounded-full opacity-30 blur-3xl mix-blend-multiply"></div>

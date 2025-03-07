@@ -31,6 +31,7 @@ export function Features() {
           <h2 className="text-3xl font-bold text-gray-700 dark:text-gray-300 mb-4">
             Why Choose V-Spec?
           </h2>
+          <div className="w-20 h-1 bg-blue-500 mx-auto mb-6"></div>
           <p className="text-gray-600 dark:text-gray-400">
             Accurate, efficient, and expert-backed responses to your specifications.
           </p>

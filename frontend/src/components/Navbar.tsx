@@ -90,9 +90,11 @@
 //     </nav>
 //   );
 // }
+
+
+
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { ThemeToggle } from "./ThemeToggle";
 import { Menu, X } from "lucide-react";
 
 export function Navbar() {
@@ -118,7 +120,7 @@ export function Navbar() {
         section.scrollIntoView({ behavior: "smooth", block: "start" });
       }, 100);
     }
-    setIsMobileMenuOpen(false); // Close mobile menu after clicking a link
+    setIsMobileMenuOpen(false);
   };
 
   const handleNavigation = (id: string) => {
@@ -127,7 +129,7 @@ export function Navbar() {
     } else {
       navigate("/", { state: { scrollTo: id } });
     }
-    setIsMobileMenuOpen(false); // Close mobile menu after navigating
+    setIsMobileMenuOpen(false);
   };
 
   useEffect(() => {
@@ -184,7 +186,15 @@ export function Navbar() {
           >
             Our Expertise
           </button>
-          <ThemeToggle />
+          {/* Get Started Button (Hidden on /get-started page) */}
+          {location.pathname !== "/get-started" && (
+            <button
+              onClick={() => navigate("/get-started")}
+              className="px-4 py-2 bg-blue-500 text-white font-medium rounded-full hover:bg-blue-600 transition-colors"
+            >
+              Get Started
+            </button>
+          )}
         </div>
       </div>
 
@@ -209,9 +219,18 @@ export function Navbar() {
           >
             Our Expertise
           </button>
-          <div className="px-6 py-3">
-            <ThemeToggle />
-          </div>
+          {/* Get Started Button in Mobile Menu (Hidden on /get-started page) */}
+          {location.pathname !== "/get-started" && (
+            <button
+              onClick={() => {
+                navigate("/get-started");
+                setIsMobileMenuOpen(false);
+              }}
+              className="block w-full text-center px-6 py-3 bg-blue-500 text-white font-medium hover:bg-blue-600 transition-colors rounded-b-lg"
+            >
+              Get Started
+            </button>
+          )}
         </div>
       )}
     </nav>
