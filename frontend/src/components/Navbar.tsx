@@ -91,11 +91,10 @@
 //   );
 // }
 
-
-
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Menu, X } from "lucide-react";
+import { useUser, UserButton } from "@clerk/clerk-react";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -103,6 +102,7 @@ export function Navbar() {
   const location = useLocation();
   const navigate = useNavigate();
   const isHomePage = location.pathname === "/";
+  const { isSignedIn } = useUser();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -164,7 +164,7 @@ export function Navbar() {
           </button>
         </div>
 
-        {/* Mobile Menu Toggle Button */}
+        {/* Mobile Menu Toggle */}
         <button
           className="sm:hidden text-gray-700 dark:text-gray-300"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -186,14 +186,19 @@ export function Navbar() {
           >
             Our Expertise
           </button>
-          {/* Get Started Button (Hidden on /get-started page) */}
-          {location.pathname !== "/get-started" && (
-            <button
-              onClick={() => navigate("/get-started")}
-              className="px-4 py-2 bg-blue-500 text-white font-medium rounded-full hover:bg-blue-600 transition-colors"
-            >
-              Get Started
-            </button>
+
+          {/* Auth Button */}
+          {isSignedIn ? (
+            <UserButton afterSignOutUrl="/" />
+          ) : (
+            location.pathname !== "/get-started" && (
+              <button
+                onClick={() => navigate("/login")}
+                className="px-4 py-2 bg-blue-500 text-white font-medium rounded-full hover:bg-blue-600 transition-colors"
+              >
+                Sign In
+              </button>
+            )
           )}
         </div>
       </div>
@@ -219,17 +224,24 @@ export function Navbar() {
           >
             Our Expertise
           </button>
-          {/* Get Started Button in Mobile Menu (Hidden on /get-started page) */}
-          {location.pathname !== "/get-started" && (
-            <button
-              onClick={() => {
-                navigate("/get-started");
-                setIsMobileMenuOpen(false);
-              }}
-              className="block w-full text-center px-6 py-3 bg-blue-500 text-white font-medium hover:bg-blue-600 transition-colors rounded-b-lg"
-            >
-              Get Started
-            </button>
+
+          {/* Auth Button in Mobile */}
+          {isSignedIn ? (
+            <div className="px-6 py-3">
+              <UserButton afterSignOutUrl="/" />
+            </div>
+          ) : (
+            location.pathname !== "/get-started" && (
+              <button
+                onClick={() => {
+                  navigate("/login");
+                  setIsMobileMenuOpen(false);
+                }}
+                className="block w-full text-center px-6 py-3 bg-blue-500 text-white font-medium hover:bg-blue-600 transition-colors rounded-b-lg"
+              >
+                Get Started
+              </button>
+            )
           )}
         </div>
       )}
