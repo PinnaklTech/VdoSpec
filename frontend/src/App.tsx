@@ -1,91 +1,61 @@
-// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import { Navbar } from "./components/Navbar";
-// import { Hero } from "./components/Hero";
-// import { Features } from "./components/Features";
-// import { Expertise } from "./components/OurExpertise";
-// import { Footer } from "./components/Footer";
-// import GetStarted from "./pages/GetStarted";
 
-// function App() {
-//   return (
-//     <Router>
-//       {/* Apply new background gradient with blobs */}
-//       <div className="relative min-h-screen bg-white dark:bg-[#101010] overflow-hidden">
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Index from "./pages/Index";
+import HumanResponse from './pages/HumanResponse'; 
+import Aichat from "./pages/Aichat";
+import SignIn from "./pages/SignIn";
+import SignUp from "./pages/SignUp";
+import NotFound from "./pages/NotFound";
+import Layout from './components/Layout';
+import LayoutWithoutFooter from './components/LayoutWithoutFooter';
+import ProtectedRoute from './components/ProtectedRoute';
+import LoadingScreen from './components/LoadingScreen';
+import { useAppLoading } from './hooks/useAppLoading';
 
-//         {/* Random Blobs */}
-//         <div className="absolute top-10 left-10 w-72 h-72 bg-blue-300 rounded-full opacity-30 blur-3xl mix-blend-multiply"></div>
-//         <div className="absolute top-1/3 right-20 w-64 h-64 bg-purple-300 rounded-full opacity-40 blur-3xl mix-blend-multiply"></div>
-//         <div className="absolute bottom-16 left-1/3 w-80 h-80 bg-pink-300 rounded-full opacity-25 blur-3xl mix-blend-multiply"></div>
+const queryClient = new QueryClient();
 
-//         <Navbar />
-//         <Routes>
-//           <Route
-//             path="/"
-//             element={
-//               <main>
-//                 <Hero />
-//                 <Features />
-//                 <Expertise/>
-//               </main>
-//             }
-//           />
-//           <Route path="/get-started" element={<GetStarted />} />
-//         </Routes>
-//         <Footer />
-//       </div>
-//     </Router>
-//   );
-// }
+const App = () => {
+  const { isLoading } = useAppLoading();
 
-// export default App;
+  // Show loading screen with absolute priority - prevent any layout rendering
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Navbar } from "./components/Navbar";
-import { Hero } from "./components/Hero";
-import { Features } from "./components/Features";
-import { Expertise } from "./components/OurExpertise";
-import { Footer } from "./components/Footer";
-import GetStarted from "./pages/GetStarted";
-import Signin from "./pages/Signin";
-import { RequireAuth } from "./components/RequireAuth";
-
-function App() {
   return (
-    <Router>
-      <div className="relative min-h-screen bg-white dark:bg-[#101010] overflow-hidden">
-        {/* Random Blobs */}
-        <div className="absolute top-10 left-10 w-72 h-72 bg-blue-300 rounded-full opacity-30 blur-3xl mix-blend-multiply"></div>
-        <div className="absolute top-1/3 right-20 w-64 h-64 bg-purple-300 rounded-full opacity-40 blur-3xl mix-blend-multiply"></div>
-        <div className="absolute bottom-16 left-1/3 w-80 h-80 bg-pink-300 rounded-full opacity-25 blur-3xl mix-blend-multiply"></div>
-
-        <Navbar />
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <main>
-                <Hero />
-                <Features />
-                <Expertise />
-              </main>
-            }
-          />
-          <Route path="/login" element={<Signin />} />
-          <Route
-            path="/get-started"
-            element={
-              <RequireAuth>
-                <GetStarted />
-              </RequireAuth>
-            }
-          />
-          <Route path="/dashboard" element={<GetStarted />} />
-        </Routes>
-
-        <Footer />
-      </div>
-    </Router>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route index element={<Index />} />
+              <Route path="*" element={<NotFound />} />
+            </Route>
+            <Route path="/" element={<LayoutWithoutFooter />}>
+              <Route path="sign-in" element={<SignIn />} />
+              <Route path="sign-up" element={<SignUp />} />
+              <Route path="get-started" element={
+                <ProtectedRoute>
+                  <HumanResponse />
+                </ProtectedRoute>
+              } />
+              <Route path="Ai-chat" element={
+                <ProtectedRoute>
+                  <Aichat />
+                </ProtectedRoute>
+              } />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
   );
-}
+};
 
 export default App;
