@@ -12,6 +12,18 @@ require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// Protect against malformed URI requests (e.g., /%c0)
+app.use((req, res, next) => {
+  try {
+    decodeURIComponent(req.path);
+    next();
+  } catch (err) {
+    console.warn("⚠️ Malformed request detected:", req.path);
+    return res.status(400).send("Bad Request");
+  }
+});
+
+
 // Middleware
 app.use(cors());
 app.use(bodyParser.json());
