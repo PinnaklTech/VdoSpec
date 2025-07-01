@@ -12,13 +12,17 @@ require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// ✅ FIRST: CORS Middleware (Must be before all routes and middlewares)
-app.use(cors({
-  origin: "https://vdospec.com", // or use an array for multiple origins
-  methods: ["GET", "POST", "DELETE"],
-  credentials: true
-}));
 
+
+// ✅ FIRST: CORS Middleware (Must be before all routes and middlewares)
+const corsOptions = {
+  origin: process.env.FRONTEND_URL,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
 // ✅ Optional: Handle preflight (OPTIONS) requests
 app.options('*', cors());
 
