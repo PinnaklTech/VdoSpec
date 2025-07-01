@@ -12,7 +12,17 @@ require("dotenv").config();
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-// Protect against malformed URI requests (e.g., /%c0)
+// ✅ FIRST: CORS Middleware (Must be before all routes and middlewares)
+app.use(cors({
+  origin: "https://vdospec.com", // or use an array for multiple origins
+  methods: ["GET", "POST", "DELETE"],
+  credentials: true
+}));
+
+// ✅ Optional: Handle preflight (OPTIONS) requests
+app.options('*', cors());
+
+// ✅ Protect against malformed URIs
 app.use((req, res, next) => {
   try {
     decodeURIComponent(req.path);
@@ -22,14 +32,6 @@ app.use((req, res, next) => {
     return res.status(400).send("Bad Request");
   }
 });
-
-
-// Middleware
-app.use(cors({
-  origin: "https://vdospec.com", // your frontend domain
-  methods: ["GET", "POST", "DELETE"],
-  credentials: true
-}));
 
 app.use(bodyParser.json());
 
