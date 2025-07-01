@@ -25,7 +25,12 @@ app.use((req, res, next) => {
 
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: "https://vdospec.com", // your frontend domain
+  methods: ["GET", "POST", "DELETE"],
+  credentials: true
+}));
+
 app.use(bodyParser.json());
 
 // Ensure 'uploads' folder exists
