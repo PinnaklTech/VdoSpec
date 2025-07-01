@@ -94,7 +94,7 @@ const HumanResponse = () => {
     formData.append('message', message);
 
     try {
-      const response = await fetch('http://localhost:3002/send-email', {
+      const response = await fetch('https://https://api.vdospec.com/send-email', {
         method: 'POST',
         body: formData,
       });
