@@ -57,7 +57,7 @@ const ChatInput: React.FC<ChatInputProps> = ({
           value={inputMessage}
           onChange={(e) => onInputChange(e.target.value)}
           onKeyDown={handleKeyDown}
-          placeholder="Message ChatGPT..."
+          placeholder="Question"
           rows={1}
           className="flex-1 resize-none bg-transparent text-gray-900 placeholder-gray-500 focus:outline-none min-h-[24px] max-h-[200px] text-base"
           style={{ 
